@@ -18,10 +18,10 @@ export default function AboutMe() {
           >
             <div className="relative group">
               {/* Decorative 'Outline' Div - Restored for depth */}
-              <div className="absolute top-4 left-4 w-full h-full border-2 border-black rounded-2xl -z-10 group-hover:top-2 group-hover:left-2 transition-all"></div>
+              <div className="absolute top-4 left-4 w-full h-full border-2 border-border-color rounded-2xl -z-10 group-hover:top-2 group-hover:left-2 transition-all"></div>
               
               {/* Main Image Container - Subtle [5/6] Squarish Crop */}
-              <div className="aspect-[5/6] w-full max-w-[360px] rounded-2xl overflow-hidden border-2 border-black bg-surface-color shadow-xl relative">
+              <div className="aspect-[5/6] w-full max-w-[360px] rounded-2xl overflow-hidden border-2 border-border-color bg-surface-color shadow-xl relative">
                 <img 
                   src="/pavan_profile.png" 
                   alt="Pavan Kalyan" 
@@ -29,9 +29,9 @@ export default function AboutMe() {
                 />
                 
                 {/* Floating Badge */}
-                <div className="absolute bottom-4 right-4 bg-white border-2 border-black px-4 py-2 rounded-xl shadow-lg flex items-center gap-2">
+                <div className="absolute bottom-4 right-4 bg-surface-color border-2 border-border-color px-4 py-2 rounded-xl shadow-lg flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-black">Active Now</span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-text-primary">Active Now</span>
                 </div>
               </div>
 
@@ -70,10 +70,10 @@ export default function AboutMe() {
                   href={pill.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-4 px-8 py-4 w-fit min-w-[180px] bg-surface-color border-2 border-black rounded-2xl shadow-sm hover:bg-black hover:text-white transition-all duration-300 active:scale-95"
+                  className="group flex items-center justify-center gap-4 px-8 py-4 w-fit min-w-[180px] bg-surface-color border-2 border-border-color rounded-2xl shadow-sm hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 active:scale-95"
                 >
-                  <pill.icon size={22} className="text-text-primary group-hover:text-white transition-colors" />
-                  <span className="text-sm font-black uppercase tracking-widest leading-none text-text-primary group-hover:text-white">{pill.label}</span>
+                  <pill.icon size={22} className="text-text-primary group-hover:text-white dark:group-hover:text-black transition-colors" />
+                  <span className="text-sm font-black uppercase tracking-widest leading-none text-text-primary group-hover:text-white dark:group-hover:text-black">{pill.label}</span>
                 </motion.a>
               ))}
             </div>

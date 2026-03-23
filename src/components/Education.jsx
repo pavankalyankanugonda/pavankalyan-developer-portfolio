@@ -76,7 +76,7 @@ export default function Education() {
                             <span className="text-[10px] text-text-muted font-black uppercase tracking-widest flex items-center gap-2">
                                 <MapPin size={12} className="text-accent-color" /> {edu.location}
                             </span>
-                            <span className="px-4 py-1.5 bg-white border border-border-color rounded-full text-[10px] font-black uppercase tracking-widest text-accent-color shadow-sm">
+                            <span className="px-4 py-1.5 bg-accent-color/10 border border-accent-color/20 rounded-full text-[10px] font-black uppercase tracking-widest text-accent-color shadow-sm backdrop-blur-sm">
                                 {edu.status}
                             </span>
                         </div>
