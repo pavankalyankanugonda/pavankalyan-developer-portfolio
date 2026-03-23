@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Inter', 'Outfit', system-ui, -apple-system, sans-serif;
+  
+  /* Premium Light Theme - Off-White & Soft Neutrals */
+  --bg-color: #F9FAFB;
+  --surface-color: #FFFFFF;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6B7280;
+  --accent-color: #000000;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --shadow-color: rgba(0, 0, 0, 0.04);
+}
+
+.dark {
+  /* Ultra-Deep 'Night' Theme - True Pure Black */
+  --bg-color: #000000;
+  --surface-color: #000000;
+  --text-primary: #FFFFFF;
+  --text-secondary: #E0E0E0;
+  --text-muted: #A0A0A0;
+  --accent-color: #FFFFFF;
+  --border-color: rgba(255, 255, 255, 0.15);
+  --glass-bg: rgba(0, 0, 0, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --shadow-color: rgba(0, 0, 0, 1);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+#root {
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Global Minimalism - Hidden Scrollbar */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.glass-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px 0 var(--shadow-color);
+  border-radius: 12px;
+}
+
+.grid-pattern {
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, var(--text-muted) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--text-muted) 1px, transparent 1px);
+  mask-image: radial-gradient(circle, black, transparent 80%);
+  opacity: 0.05;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, var(--text-secondary), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px var(--accent-color);
+  opacity: 0.3;
+}
+
+.glow-text {
+  text-shadow: 0 0 10px var(--accent-color);
+}
+
+h1, h2, h3 {
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+h1 { font-size: 64px; }
+
+h2 { 
+  font-size: 48px; 
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h2 span {
+  display: inline;
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--accent-color);
+  letter-spacing: inherit;
+  opacity: 1;
+  margin-top: 0;
+}
+
+h3 { font-size: 28px; }
+
+p, span, li, a {
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-content {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+section {
+  position: relative;
+  z-index: 10;
+  padding: 120px 0;
+}
+
+.section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+
+.card-padding {
+  padding: 40px;
+}
+
+.gap-standard {
+  gap: 24px;
+}
