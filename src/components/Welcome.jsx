@@ -4,7 +4,6 @@ import { Cpu, Sparkles } from 'lucide-react';
 
 const Welcome = ({ onComplete }) => {
   const [stage, setStage] = useState(1);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     // Stage-based Timing
@@ -12,9 +11,6 @@ const Welcome = ({ onComplete }) => {
     const t2 = setTimeout(() => setStage(3), 2200);
     const t3 = setTimeout(() => onComplete(), 4000);
 
-    // Initial theme detection
-    setIsDarkMode(document.documentElement.classList.contains('dark'));
-    
     return () => {
         clearTimeout(t1);
         clearTimeout(t2);
@@ -31,8 +27,8 @@ const Welcome = ({ onComplete }) => {
         filter: "blur(40px)",
         transition: { duration: 1 } 
       }}
-      className={`fixed inset-0 z-[999] flex items-center justify-center overflow-hidden pointer-events-none transition-colors duration-500
-        ${isDarkMode ? 'bg-black' : 'bg-white'}`}
+      style={{ backgroundColor: 'var(--bg-color)' }}
+      className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden pointer-events-none transition-colors duration-500"
     >
       <AnimatePresence mode="wait">
         {stage === 1 && (
@@ -42,8 +38,8 @@ const Welcome = ({ onComplete }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className={`text-7xl md:text-9xl font-black uppercase tracking-[0.2em] italic text-center
-              ${isDarkMode ? 'text-white' : 'text-black'}`}
+            style={{ color: 'var(--text-primary)' }}
+            className="text-7xl md:text-9xl font-black uppercase tracking-[0.2em] italic text-center"
           >
             Welcome
           </motion.h1>
@@ -55,8 +51,8 @@ const Welcome = ({ onComplete }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className={`text-6xl md:text-8xl font-black uppercase tracking-tighter text-center
-              ${isDarkMode ? 'text-white' : 'text-black'}`}
+            style={{ color: 'var(--text-primary)' }}
+            className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-center"
           >
             I Am
           </motion.h1>
@@ -70,16 +66,18 @@ const Welcome = ({ onComplete }) => {
             transition={{ duration: 0.6 }}
             className="flex flex-col items-center text-center px-4"
           >
-             <h1 className={`text-5xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-4
-               ${isDarkMode ? 'text-white' : 'text-black'}`}>
+             <h1 
+               style={{ color: 'var(--text-primary)' }}
+               className="text-5xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-4"
+             >
                 Pavan Kalyan
              </h1>
              <motion.div 
                initial={{ width: 0 }}
                animate={{ width: 120 }}
                transition={{ delay: 0.4, duration: 1 }}
-               className={`h-2.5 rounded-full shadow-lg
-                 ${isDarkMode ? 'bg-white' : 'bg-black'}`}
+               style={{ backgroundColor: 'var(--text-primary)' }}
+               className="h-2.5 rounded-full shadow-lg"
              />
           </motion.div>
         )}
