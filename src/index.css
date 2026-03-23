@@ -14,6 +14,7 @@
   --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(0, 0, 0, 0.05);
   --shadow-color: rgba(0, 0, 0, 0.04);
+  --intro-text: #333333;
 }
 
 .dark {
@@ -28,6 +29,7 @@
   --glass-bg: rgba(0, 0, 0, 0.8);
   --glass-border: rgba(255, 255, 255, 0.1);
   --shadow-color: rgba(0, 0, 0, 1);
+  --intro-text: #FFFFFF;
 }
 
 body {
@@ -148,4 +150,21 @@ section {
 
 .gap-standard {
   gap: 24px;
+}
+
+.rainbow-text {
+  background: linear-gradient(
+    to right, 
+    #ff0000, #ff8700, #ffd300, #deff0a, #a1ff0a, #0aff99, #0aefff, #147df5, #580aff, #be0aff, #ff00c1, #ff0000
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  animation: rainbow-shift 5s linear infinite;
+}
+
+@keyframes rainbow-shift {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }

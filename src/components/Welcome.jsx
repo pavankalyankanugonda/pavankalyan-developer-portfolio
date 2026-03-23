@@ -38,8 +38,7 @@ const Welcome = ({ onComplete }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            style={{ color: 'var(--text-primary)' }}
-            className="text-7xl md:text-9xl font-black uppercase tracking-[0.2em] italic text-center"
+            className="text-7xl md:text-9xl font-black uppercase tracking-[0.2em] italic text-center rainbow-text"
           >
             Welcome
           </motion.h1>
@@ -51,8 +50,7 @@ const Welcome = ({ onComplete }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            style={{ color: 'var(--text-primary)' }}
-            className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-center"
+            className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-center rainbow-text"
           >
             I Am
           </motion.h1>
@@ -66,18 +64,15 @@ const Welcome = ({ onComplete }) => {
             transition={{ duration: 0.6 }}
             className="flex flex-col items-center text-center px-4"
           >
-             <h1 
-               style={{ color: 'var(--text-primary)' }}
-               className="text-5xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-4"
-             >
+             <h1 className="text-5xl md:text-9xl font-black uppercase tracking-tighter leading-none mb-4 rainbow-text">
                 Pavan Kalyan
              </h1>
              <motion.div 
                initial={{ width: 0 }}
                animate={{ width: 120 }}
                transition={{ delay: 0.4, duration: 1 }}
-               style={{ backgroundColor: 'var(--text-primary)' }}
-               className="h-2.5 rounded-full shadow-lg"
+               className="h-2.5 rounded-full shadow-lg rainbow-text"
+               style={{ backgroundSize: '100% 100%', WebkitTextFillColor: 'initial', backgroundClip: 'initial' }}
              />
           </motion.div>
         )}
