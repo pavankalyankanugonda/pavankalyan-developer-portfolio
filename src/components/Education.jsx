@@ -11,7 +11,8 @@ export default function Education() {
       location: "Phagwara, Punjab",
       date: "Aug' 23 - Present",
       status: "Currently Pursuing",
-      accent: "rgba(33, 37, 41, 0.05)"
+      accent: "rgba(33, 37, 41, 0.05)",
+      logo: "/lpu_logo.jpg"
     },
     {
       institution: "Narayana Junior College",
@@ -20,7 +21,8 @@ export default function Education() {
       location: "Tirupathi, Andhra Pradesh",
       date: "Jul' 21 - May' 23",
       status: "Completed",
-      accent: "rgba(33, 37, 41, 0.03)"
+      accent: "rgba(33, 37, 41, 0.03)",
+      logo: "/narayana_logo.png"
     },
     {
       institution: "Jeevan Jyothi E.M High School",
@@ -29,7 +31,8 @@ export default function Education() {
       location: "O.D.C, Andhra Pradesh",
       date: "Jun' 20 - Jun' 21",
       status: "Completed",
-      accent: "rgba(33, 37, 41, 0.05)"
+      accent: "rgba(33, 37, 41, 0.05)",
+      logo: "/jeevan_jyothi_logo.jpg"
     }
   ];
 
@@ -63,8 +66,8 @@ export default function Education() {
               <div className="glass-card w-full p-8 md:p-12 rounded-[2.5rem] border border-border-color hover:border-accent-color transition-all duration-500 shadow-sm hover:shadow-2xl hover:shadow-black/10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
                 
                 <div className="flex-1 flex flex-col md:flex-row gap-8 items-start">
-                    <div className="p-6 bg-surface-color rounded-3xl text-accent-color border border-border-color shadow-inner group-hover:scale-110 transition-transform duration-500">
-                        <GraduationCap size={32} />
+                    <div className="w-20 h-20 bg-surface-color rounded-3xl p-3 border border-border-color shadow-inner group-hover:scale-110 transition-transform duration-500 flex items-center justify-center overflow-hidden">
+                        <img src={edu.logo} alt={edu.institution} className="w-full h-full object-contain" />
                     </div>
 
                     <div className="flex-1">

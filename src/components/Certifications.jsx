@@ -1,8 +1,56 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Award, ExternalLink } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { Award, ExternalLink, Eye, X } from 'lucide-react';
+
+const CardTilt = ({ children, className, cert, getThumbnailUrl, onSelected }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className={`relative ${className}`}
+    >
+      <div style={{ transform: "translateZ(20px)" }} className="h-full">
+        {children}
+      </div>
+
+    </motion.div>
+  );
+};
 
 export default function Certifications() {
+  const [selectedCert, setSelectedCert] = useState(null);
+
   const certifications = [
     { 
       title: "ChatGPT-4 Prompt Engineering", 
@@ -36,6 +84,31 @@ export default function Certifications() {
     }
   ];
 
+  const getDriveId = (link) => {
+    try {
+      const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? match[1] : null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const getThumbnailUrl = (link) => {
+    const id = getDriveId(link);
+    return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w1000` : null;
+  };
+
+  const getPreviewUrl = (link) => {
+    try {
+      if (link.includes('drive.google.com')) {
+        return link.replace(/\/view.*$/, '/preview');
+      }
+      return link;
+    } catch (e) {
+      return link;
+    }
+  };
+
   return (
     <section className="py-24" id="certifications">
       <div className="section-container">
@@ -46,71 +119,130 @@ export default function Certifications() {
 
         <div className="grid grid-cols-1 gap-10">
           {/* Highlighted Training */}
-          <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="glass-card card-padding rounded-2xl border border-border-color bg-surface-color/30 hover:border-accent-color transition-all group relative overflow-hidden"
+          <CardTilt 
+            cert={{ title: "CSE Pathshala - C++ Programming in OOPs and DSA", link: "https://drive.google.com/file/d/1Fq2td9FpzdngspecdnB5M1TPkYhuZfee/view?usp=drive_link" }}
+            getThumbnailUrl={getThumbnailUrl}
+            className="group"
           >
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                  <h3 className="text-text-primary group-hover:text-accent-color transition-colors tracking-tight">
-                      CSE Pathshala - C++ Programming in OOPs and DSA
-                  </h3>
-                  <a 
-                      href="https://drive.google.com/file/d/1Fq2td9FpzdngspecdnB5M1TPkYhuZfee/view?usp=drive_link" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-2 bg-text-primary text-bg-color px-6 py-2.5 rounded-lg font-bold shadow-sm hover:scale-105 transition-all text-xs uppercase tracking-widest"
-                  >
-                      View Certificate <ExternalLink size={14} />
-                  </a>
-              </div>
-              
-              <p className="text-content text-text-muted mb-6 leading-relaxed max-w-3xl">
-                  Applied object-oriented principles to build scaleable code architectures and mastered advanced data structures to solve complex algorithmic problems.
-              </p>
-              
-              <div className="flex flex-wrap gap-3 items-center">
-                  {["C++", "DSA", "OOPs", "Algorithm Optimization"].map((tag, i) => (
-                      <span key={i} className="px-3 py-1.5 bg-surface-color border border-border-color rounded-lg text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                          {tag}
-                      </span>
-                  ))}
-                  <div className="ml-auto text-[10px] font-bold text-accent-color uppercase tracking-widest">
-                      Completed August 2025
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="glass-card card-padding rounded-2xl border border-border-color bg-surface-color/30 hover:border-accent-color transition-all relative overflow-hidden h-full"
+            >
+                {/* Hover Image Preview for Highlighted Card */}
+                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-30 transition-all duration-700 overflow-hidden pointer-events-none">
+                  <img 
+                    src={getThumbnailUrl("https://drive.google.com/file/d/1Fq2td9FpzdngspecdnB5M1TPkYhuZfee/view?usp=drive_link")} 
+                    alt="" 
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-bg-color/90 via-bg-color/30 to-transparent" />
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-8 relative z-10">
+                  <div className="flex-1">
+                    <h3 className="text-text-primary group-hover:text-accent-color transition-colors tracking-tight mb-4">
+                        CSE Pathshala - C++ Programming in OOPs and DSA
+                    </h3>
+                    
+                    <p className="text-content text-text-muted mb-6 leading-relaxed max-w-3xl">
+                        Applied object-oriented principles to build scaleable code architectures and mastered advanced data structures to solve complex algorithmic problems.
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-3 items-center mb-6">
+                        {["C++", "DSA", "OOPs", "Algorithm Optimization"].map((tag, i) => (
+                            <span key={i} className="px-3 py-1.5 bg-surface-color border border-border-color rounded-lg text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                                {tag}
+                            </span>
+                        ))}
+                        <div className="ml-auto text-[10px] font-bold text-accent-color uppercase tracking-widest">
+                            Completed August 2025
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <button 
+                            onClick={() => setSelectedCert({ title: "CSE Pathshala - C++ Programming in OOPs and DSA", link: "https://drive.google.com/file/d/1Fq2td9FpzdngspecdnB5M1TPkYhuZfee/view?usp=drive_link" })}
+                            className="group flex items-center gap-2 bg-accent-color/10 border border-accent-color/20 text-accent-color px-6 py-2.5 rounded-lg font-bold shadow-sm hover:bg-accent-color/20 transition-all text-xs uppercase tracking-widest"
+                        >
+                            Preview <Eye size={14} />
+                        </button>
+                        <a 
+                            href="https://drive.google.com/file/d/1Fq2td9FpzdngspecdnB5M1TPkYhuZfee/view?usp=drive_link" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="group flex items-center gap-2 bg-text-primary text-bg-color px-6 py-2.5 rounded-lg font-bold shadow-sm hover:scale-105 transition-all text-xs uppercase tracking-widest"
+                        >
+                            View Original <ExternalLink size={14} />
+                        </a>
+                    </div>
                   </div>
-              </div>
-          </motion.div>
+                </div>
+            </motion.div>
+          </CardTilt>
 
           {/* Grid of certifications */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {certifications.map((cert, idx) => (
-                <motion.a 
-                    key={idx}
-                    href={cert.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="glass-card p-6 rounded-xl border border-border-color flex flex-col justify-between hover:border-secondary transition-all group"
+                <CardTilt 
+                    key={idx} 
+                    cert={cert} 
+                    getThumbnailUrl={getThumbnailUrl}
+                    className="group"
                 >
-                    <div className="flex justify-between items-start gap-4 mb-4">
-                        <Award size={24} className="text-text-muted group-hover:text-secondary" />
-                        <ExternalLink size={14} className="text-text-muted group-hover:text-text-primary" />
-                    </div>
-                    
-                    <div>
-                        <h3 className="text-lg font-bold text-text-primary mb-1 tracking-tight">{cert.title}</h3>
-                        <p className="text-xs text-text-muted font-medium italic mb-4">{cert.organization}</p>
-                    </div>
-                    
-                    <div className="pt-4 border-t border-border-color flex justify-between items-center text-[10px] font-bold text-text-muted uppercase tracking-widest">
-                        <span>ISSUED</span>
-                        <span className="text-accent-color">{cert.date}</span>
-                    </div>
-                </motion.a>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="glass-card p-6 rounded-xl border border-border-color flex flex-col justify-between hover:border-secondary transition-all relative h-full"
+                    >
+                        <div className="flex justify-between items-start gap-4 mb-4">
+                            <Award size={24} className="text-text-muted group-hover:text-secondary transition-colors" />
+                            <div className="flex gap-2">
+                            <button 
+                                onClick={(e) => { e.preventDefault(); setSelectedCert(cert); }}
+                                title="Preview Certificate"
+                                className="p-1.5 rounded-md bg-surface-color/80 border border-border-color text-text-muted hover:text-accent-color hover:border-accent-color transition-all backdrop-blur-sm"
+                            >
+                                <Eye size={14} />
+                            </button>
+                            <a 
+                                href={cert.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Open Link"
+                                className="p-1.5 rounded-md bg-surface-color/80 border border-border-color text-text-muted hover:text-text-primary hover:border-text-primary transition-all backdrop-blur-sm"
+                            >
+                                <ExternalLink size={14} />
+                            </a>
+                            </div>
+                        </div>
+                        
+                        {/* Hover Image Preview Grid Item */}
+                        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-all duration-500 overflow-hidden pointer-events-none">
+                        <img 
+                            src={getThumbnailUrl(cert.link)} 
+                            alt="" 
+                            onError={(e) => { e.target.style.display = 'none'; }}
+                            className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-bg-color/90 via-bg-color/40 to-transparent" />
+                        </div>
+
+                        <div className="relative z-10">
+                            <h3 className="text-lg font-bold text-text-primary mb-1 tracking-tight pr-4 group-hover:text-accent-color transition-colors">{cert.title}</h3>
+                            <p className="text-xs text-text-muted font-medium italic mb-4">{cert.organization}</p>
+                        </div>
+                        
+                        <div className="relative z-10 pt-4 border-t border-border-color flex justify-between items-center text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                            <span>ISSUED</span>
+                            <span className="text-accent-color">{cert.date}</span>
+                        </div>
+                    </motion.div>
+                </CardTilt>
             ))}
           </div>
 
@@ -127,8 +259,25 @@ export default function Certifications() {
                       Recognized specifically for problem-solving in the <span className="text-text-primary font-bold">Coding Wise Hackathon</span> and leadership as a <span className="text-accent-color font-bold">Co-ordinator</span> for the Inventix technical symposium.
                   </p>
                   <div className="flex gap-3 justify-center md:justify-start">
-                      <span className="px-4 py-1.5 bg-accent-color/10 border border-accent-color/20 rounded-full text-[10px] font-bold text-accent-color uppercase tracking-widest leading-none">Hackathon Participation</span>
-                      <span className="px-4 py-1.5 bg-accent-color/10 border border-accent-color/20 rounded-full text-[10px] font-bold text-accent-color uppercase">Event Coordinator</span>
+                      <button 
+                        onClick={() => setSelectedCert({ title: "Hackathon Participation - Binary Blitz", link: "https://drive.google.com/file/d/1LTsWyjd9jK0NepuJisNmdyCZjqyFirKP/view?usp=drive_link" })}
+                        className="px-4 py-1.5 bg-accent-color/10 border border-accent-color/20 rounded-full text-[10px] font-bold text-accent-color uppercase tracking-widest leading-none hover:bg-accent-color/20 transition-all cursor-pointer flex items-center gap-1.5"
+                      >
+                        Hackathon Participation <Eye size={10} />
+                      </button>
+                      <button 
+                        onClick={() => setSelectedCert({ title: "Event Coordinator - Inventix", link: "/inventix_logo.png", isImage: true })}
+                        className="flex items-center gap-3 px-4 py-1.5 bg-accent-color/10 border border-accent-color/20 rounded-full group/coordinator cursor-pointer hover:bg-accent-color/20 transition-all"
+                      >
+                        <img 
+                            src="/inventix_logo.png" 
+                            alt="Inventix Logo" 
+                            className="w-4 h-4 object-contain rounded-full border border-accent-color/30 group-hover/coordinator:scale-125 transition-all"
+                            onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                        <span className="text-[10px] font-bold text-accent-color uppercase tracking-widest">Event Coordinator</span>
+                        <Eye size={10} className="text-accent-color/50 group-hover/coordinator:text-accent-color transition-colors" />
+                      </button>
                   </div>
               </div>
               <div className="h-20 w-20 bg-accent-color/10 rounded-full flex items-center justify-center border border-accent-color/20">
@@ -137,6 +286,81 @@ export default function Certifications() {
           </motion.div>
         </div>
       </div>
+
+      {/* Certificate Preview Modal */}
+      <AnimatePresence>
+        {selectedCert && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCert(null)}
+              className="absolute inset-0 bg-bg-color/80 backdrop-blur-md"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-5xl h-[80vh] bg-surface-color border border-border-color rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+            >
+              <div className="flex items-center justify-between p-4 border-b border-border-color bg-surface-color">
+                <div className="flex items-center gap-3">
+                  <Award size={20} className="text-accent-color" />
+                  <h4 className="text-text-primary font-bold pr-10 truncate">{selectedCert.title}</h4>
+                </div>
+                <button 
+                  onClick={() => setSelectedCert(null)}
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors text-text-muted hover:text-text-primary"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              
+              <div className="flex-1 bg-black/20 relative flex items-center justify-center overflow-hidden">
+                {selectedCert.isImage ? (
+                  <img 
+                    src={selectedCert.link} 
+                    alt={selectedCert.title} 
+                    className="max-w-full max-h-full object-contain p-8"
+                  />
+                ) : (
+                  <>
+                    <iframe 
+                      src={getPreviewUrl(selectedCert.link)} 
+                      className="w-full h-full border-none"
+                      allow="autoplay"
+                      title="Certificate Preview"
+                    />
+                    
+                    {/* Loader placeholder */}
+                    <div className="absolute inset-0 -z-10 flex items-center justify-center">
+                      <div className="w-10 h-10 border-4 border-accent-color/20 border-t-accent-color rounded-full animate-spin" />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="p-4 border-t border-border-color bg-surface-color flex justify-between items-center">
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                  Preview Mode
+                </p>
+                {selectedCert.link.startsWith('http') && (
+                  <a 
+                    href={selectedCert.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-accent-color hover:underline flex items-center gap-1 uppercase tracking-widest"
+                  >
+                    Open in Google Drive <ExternalLink size={12} />
+                  </a>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
