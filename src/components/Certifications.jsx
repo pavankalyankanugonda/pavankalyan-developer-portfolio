@@ -129,18 +129,9 @@ export default function Certifications() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="glass-card card-padding rounded-2xl border border-border-color bg-surface-color/30 hover:border-accent-color transition-all relative overflow-hidden h-full"
+                className="glass-card card-padding rounded-2xl border border-border-color bg-surface-color/95 hover:border-accent-color transition-all relative overflow-hidden h-full"
             >
-                {/* Hover Image Preview for Highlighted Card */}
-                <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-30 transition-all duration-700 overflow-hidden pointer-events-none">
-                  <img 
-                    src={getThumbnailUrl("https://drive.google.com/file/d/1Fq2td9FpzdngspecdnB5M1TPkYhuZfee/view?usp=drive_link")} 
-                    alt="" 
-                    onError={(e) => { e.target.style.display = 'none'; }}
-                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-1000"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-bg-color/90 via-bg-color/30 to-transparent" />
-                </div>
+
 
                 <div className="flex flex-col md:flex-row gap-8 relative z-10">
                   <div className="flex-1">
@@ -221,16 +212,7 @@ export default function Certifications() {
                             </div>
                         </div>
                         
-                        {/* Hover Image Preview Grid Item */}
-                        <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-all duration-500 overflow-hidden pointer-events-none">
-                        <img 
-                            src={getThumbnailUrl(cert.link)} 
-                            alt="" 
-                            onError={(e) => { e.target.style.display = 'none'; }}
-                            className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-br from-bg-color/90 via-bg-color/40 to-transparent" />
-                        </div>
+
 
                         <div className="relative z-10">
                             <h3 className="text-lg font-bold text-text-primary mb-1 tracking-tight pr-4 group-hover:text-accent-color transition-colors">{cert.title}</h3>
